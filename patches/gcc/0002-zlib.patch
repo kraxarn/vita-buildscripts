@@ -1,17 +1,17 @@
-diff --git a/gcc/zlib/CMakeLists.txt b/gcc/zlib/CMakeLists.txt
+diff --git a/zlib/CMakeLists.txt b/zlib/CMakeLists.txt
 index 0fe939df6..4447422c3 100644
---- a/gcc/zlib/CMakeLists.txt
-+++ b/gcc/zlib/CMakeLists.txt
+--- a/zlib/CMakeLists.txt
++++ b/zlib/CMakeLists.txt
 @@ -1,4 +1,4 @@
 -cmake_minimum_required(VERSION 2.4.4)
 +cmake_minimum_required(VERSION 3.16)
  set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS ON)
  
  project(zlib C)
-diff --git a/gcc/zlib/zutil.h b/gcc/zlib/zutil.h
+diff --git a/zlib/zutil.h b/zlib/zutil.h
 index 4b596adf6..74f1b12f4 100644
---- a/gcc/zlib/zutil.h
-+++ b/gcc/zlib/zutil.h
+--- a/zlib/zutil.h
++++ b/zlib/zutil.h
 @@ -132,15 +132,6 @@ extern z_const char * const z_errmsg[10]; /* indexed by 2-zlib_error */
  
  #if defined(MACOS) || defined(TARGET_OS_MAC)
