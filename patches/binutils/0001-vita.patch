@@ -1,7 +1,6 @@
-diff --git a/ld/scripttempl/elf.sc b/ld/scripttempl/elf.sc
-index be8d19fc..e7045e09 100644
---- a/ld/scripttempl/elf.sc
-+++ b/ld/scripttempl/elf.sc
+diff -Nru a/src/binutils/ld/scripttempl/elf.sc b/src/binutils/ld/scripttempl/elf.sc
+--- a/src/binutils/ld/scripttempl/elf.sc
++++ b/src/binutils/ld/scripttempl/elf.sc
 @@ -790,6 +790,8 @@ EOF
  emit_data()
  {

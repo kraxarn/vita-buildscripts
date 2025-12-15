@@ -1,7 +1,6 @@
-diff --git a/bfd/elf32-arm.c b/bfd/elf32-arm.c
-index c913f2b4..eddfeaa4 100644
---- a/bfd/elf32-arm.c
-+++ b/bfd/elf32-arm.c
+diff -urN binutils-2.45.orig/bfd/elf32-arm.c binutils-2.45/bfd/elf32-arm.c
+--- binutils-2.45.orig/bfd/elf32-arm.c
++++ binutils-2.45/bfd/elf32-arm.c
 @@ -13759,6 +13759,7 @@ elf32_arm_fix_exidx_coverage (asection **text_section_order,
  	  else
  	    unwind_type = 2;

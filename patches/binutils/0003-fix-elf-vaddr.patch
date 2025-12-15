@@ -1,7 +1,6 @@
-diff --git a/ld/emulparams/armelf.sh b/ld/emulparams/armelf.sh
-index dd71fe77..85f0d982 100644
---- a/ld/emulparams/armelf.sh
-+++ b/ld/emulparams/armelf.sh
+diff -Nru a/src/binutils/ld/emulparams/armelf.sh b/src/binutils/ld/emulparams/armelf.sh
+--- a/src/binutils/ld/emulparams/armelf.sh
++++ b/src/binutils/ld/emulparams/armelf.sh
 @@ -3,7 +3,7 @@ SCRIPT_NAME=elf
  OUTPUT_FORMAT="elf32-littlearm"
  BIG_OUTPUT_FORMAT="elf32-bigarm"
