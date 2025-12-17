@@ -1,0 +1,36 @@
+diff --git a/newlib/libc/sys/vita/dirent.c b/newlib/libc/sys/vita/dirent.c
+index bab96834e..807fd1f45 100644
+--- a/newlib/libc/sys/vita/dirent.c
++++ b/newlib/libc/sys/vita/dirent.c
+@@ -29,6 +29,7 @@ DEALINGS IN THE SOFTWARE.
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <dirent.h>
+
+ #include <psp2/types.h>
+ #include <psp2/io/dirent.h>
+diff --git a/newlib/libc/sys/vita/pipe.c b/newlib/libc/sys/vita/pipe.c
+index 835e93aae..adb07d8db 100644
+--- a/newlib/libc/sys/vita/pipe.c
++++ b/newlib/libc/sys/vita/pipe.c
+@@ -31,6 +31,7 @@ DEALINGS IN THE SOFTWARE.
+ #include <sys/socket.h>
+ #include <string.h>
+ #include <fcntl.h>
++#include <unistd.h>
+
+ #include <psp2/types.h>
+ #include <psp2/kernel/threadmgr.h>
+diff --git a/newlib/libc/sys/vita/socket.c b/newlib/libc/sys/vita/socket.c
+index 8990c101c..a3c451598 100644
+--- a/newlib/libc/sys/vita/socket.c
++++ b/newlib/libc/sys/vita/socket.c
+@@ -28,6 +28,7 @@ DEALINGS IN THE SOFTWARE.
+ #include <stdlib.h>
+ #include <string.h>
+ #include <netinet/in.h>
++#include <unistd.h>
+
+ #include <psp2/net/net.h>
+ #include <psp2/types.h>

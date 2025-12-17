@@ -1,0 +1,37 @@
+diff --git a/pte_new.c b/pte_new.c
+index 796f100..0678570 100644
+--- a/pte_new.c
++++ b/pte_new.c
+@@ -51,8 +51,8 @@
+ pthread_t
+ pte_new (void)
+ {
+-  pthread_t t = NULL;
+-  pthread_t nil = NULL;
++  pthread_t t = 0;
++  pthread_t nil = 0;
+   pte_thread_t * tp;
+
+   /*
+diff --git a/pte_reuse.c b/pte_reuse.c
+index ca0b595..588e692 100644
+--- a/pte_reuse.c
++++ b/pte_reuse.c
+@@ -84,7 +84,7 @@
+ pthread_t
+ pte_threadReusePop (void)
+ {
+-  pthread_t t = NULL;
++  pthread_t t = 0;
+
+   pte_osMutexLock (pte_thread_reuse_lock);
+
+@@ -122,7 +122,7 @@ void
+ pte_threadReusePush (pthread_t thread)
+ {
+   pte_thread_t * tp = (pte_thread_t *) thread;
+-  pthread_t t = NULL;
++  pthread_t t = 0;
+
+
+   pte_osMutexLock (pte_thread_reuse_lock);
