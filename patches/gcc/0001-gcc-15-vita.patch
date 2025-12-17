@@ -1,47 +1,47 @@
 diff --git a/gcc/config/arm/arm-c.cc b/gcc/config/arm/arm-c.cc
-index 59c0d8c..6468c67 100644
+index 15e408090..3b1db6593 100644
 --- a/gcc/config/arm/arm-c.cc
 +++ b/gcc/config/arm/arm-c.cc
-@@ -415,6 +415,7 @@ arm_cpu_cpp_builtins (struct cpp_reader * pfile)
+@@ -437,6 +437,7 @@ arm_cpu_cpp_builtins (struct cpp_reader * pfile)
    builtin_assert ("cpu=arm");
    builtin_assert ("machine=arm");
- 
+
 +  builtin_define ("__vita__");
    arm_cpu_builtins (pfile);
  }
- 
+
 diff --git a/gcc/config/arm/arm.h b/gcc/config/arm/arm.h
-index 7d40b8b..a9b9f55 100644
+index 8472b7561..7f2d0c843 100644
 --- a/gcc/config/arm/arm.h
 +++ b/gcc/config/arm/arm.h
-@@ -744,6 +744,10 @@ extern const int arm_arch_cde_coproc_bits[];
+@@ -746,6 +746,10 @@ extern const int arm_arch_cde_coproc_bits[];
  #define WCHAR_TYPE_SIZE BITS_PER_WORD
  #endif
- 
+
 +/* use int and unsigned int for int32_t and uint32_t */
 +#undef STDINT_LONG32
 +#define STDINT_LONG32 0
 +
  /* Sized for fixed-point types.  */
- 
+
  #define SHORT_FRACT_TYPE_SIZE 8
-@@ -2116,7 +2120,7 @@ enum arm_auto_incmodes
+@@ -2141,7 +2145,7 @@ enum arm_auto_incmodes
  /* signed 'char' is most compatible, but RISC OS wants it unsigned.
     unsigned is probably best, but may break some code.  */
  #ifndef DEFAULT_SIGNED_CHAR
 -#define DEFAULT_SIGNED_CHAR  0
 +#define DEFAULT_SIGNED_CHAR  1
  #endif
- 
+
  /* Max number of bytes we can move from memory to memory
 diff --git a/gcc/config/arm/arm.opt b/gcc/config/arm/arm.opt
-index 3a49b51..840b2b3 100644
+index 042cb54e0..4aa03139c 100644
 --- a/gcc/config/arm/arm.opt
 +++ b/gcc/config/arm/arm.opt
-@@ -33,6 +33,9 @@ unsigned aarch_enable_bti = 0
+@@ -30,6 +30,9 @@ enum aarch_function_type aarch_ra_sign_scope = AARCH_FUNCTION_NONE
  TargetVariable
- enum aarch_key_type aarch_ra_sign_key = AARCH_KEY_A
- 
+ unsigned aarch_enable_bti = 0
+
 +pthread
 +Driver
 +
@@ -49,22 +49,22 @@ index 3a49b51..840b2b3 100644
  Name(tls_type) Type(enum arm_tls_type)
  TLS dialect to use:
 diff --git a/gcc/gcc.cc b/gcc/gcc.cc
-index 16bb07f..8c440dc 100644
+index 4fd87f2c4..c038a1d5c 100644
 --- a/gcc/gcc.cc
 +++ b/gcc/gcc.cc
-@@ -732,8 +732,9 @@ proper position among the other output files.  */
+@@ -752,8 +752,9 @@ proper position among the other output files.  */
  #endif
- 
+
  /* config.h can define LIB_SPEC to override the default libraries.  */
 +#undef LIB_SPEC
  #ifndef LIB_SPEC
 -#define LIB_SPEC "%{!shared:%{g*:-lg} %{!p:%{!pg:-lc}}%{p:-lc_p}%{pg:-lc_p}}"
 +#define LIB_SPEC "%{!shared:%{g*:-lg} %{!p:%{!pg:-lc}}%{p:-lc_p}%{pg:-lc_p}} %{pthread:--whole-archive -lpthread --no-whole-archive} -lSceRtc_stub -lSceSysmem_stub -lSceKernelThreadMgr_stub -lSceKernelModulemgr_stub -lSceIofilemgr_stub -lSceProcessmgr_stub -lSceLibKernel_stub -lSceNet_stub -lSceNetCtl_stub -lSceSysmodule_stub"
  #endif
- 
+
  /* When using -fsplit-stack we need to wrap pthread_create, in order
 diff --git a/gcc/genconditions.cc b/gcc/genconditions.cc
-index 28655fa..27cb71b 100644
+index 5eae207a0..4e0a569ed 100644
 --- a/gcc/genconditions.cc
 +++ b/gcc/genconditions.cc
 @@ -58,7 +58,7 @@ write_header (void)
@@ -83,25 +83,25 @@ index 28655fa..27cb71b 100644
 -#if GCC_VERSION >= 3001\n\
 +#if GCC_VERSION >= 3001 && __clang_major__ < 9\n\
  static const struct c_test insn_conditions[] = {\n");
- 
+
    traverse_c_tests (write_one_condition, 0);
 @@ -191,7 +191,7 @@ write_writer (void)
  	"  unsigned int i;\n"
          "  const char *p;\n"
          "  puts (\"(define_conditions [\");\n"
 -	"#if GCC_VERSION >= 3001\n"
-+	"#if GCC_VERSION >= 3001 && __clang_major__ < 9\n"
++    "#if GCC_VERSION >= 3001 && __clang_major__ < 9\n"
  	"  for (i = 0; i < ARRAY_SIZE (insn_conditions) - 1; i++)\n"
  	"    {\n"
  	"      printf (\"  (%d \\\"\", insn_conditions[i].value);\n"
 diff --git a/libgomp/configure b/libgomp/configure
-index fd0e337..2366415 100755
+index df1fc8df3..b41bfadf2 100755
 --- a/libgomp/configure
 +++ b/libgomp/configure
-@@ -15552,28 +15552,6 @@ $as_echo "#define HAVE_UNAME 1" >>confdefs.h
+@@ -15658,29 +15658,6 @@ $as_echo "#define HAVE_UNAME 1" >>confdefs.h
  fi
  rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
- 
+
 -# Check for gethostname.
 -cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 -/* end confdefs.h.  */
@@ -124,11 +124,12 @@ index fd0e337..2366415 100755
 -
 -fi
 -rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
- 
+-
  # Check for getpid.
  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
 diff --git a/libgomp/libgomp_f.h.in b/libgomp/libgomp_f.h.in
-index d8e61c8..9d120f6 100644
+index a0e4810f4..16f4cfa81 100644
 --- a/libgomp/libgomp_f.h.in
 +++ b/libgomp/libgomp_f.h.in
 @@ -81,7 +81,7 @@ omp_check_defines (void)
